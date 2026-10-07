@@ -3,8 +3,8 @@
 version = 4
 
 [[package]]
-name = "elevate-zainium"
-version = "0.2.13"
+name = "elevate"
+version = "1.0.1"
 dependencies = [
  "glob",
  "libc",

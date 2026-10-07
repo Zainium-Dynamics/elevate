@@ -336,7 +336,7 @@ fn edit_elevators_file(
                 _ => continue,
             }
         } else {
-            if elevators_path == Path::new(&elevate_paths::get().elevators_file)
+            if elevators_path == Path::new(&crate::paths::get().elevators_file)
                 && viselev_edit_is_allowed(elevators, &host_name) == Some(false)
             {
                 writeln!(

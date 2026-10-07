@@ -120,11 +120,7 @@ impl fmt::Display for Error {
                 }
             }
             Error::MaxAuthAttempts(num) => {
-                xlat_write!(
-                    f,
-                    "maximum {num} incorrect authentication attempts",
-                    num = num
-                )
+                xlat_write!(f, "{num} incorrect password attempts", num = num)
             }
             Error::ChDirNotAllowed { chdir, command } => xlat_write!(
                 f,

@@ -164,7 +164,7 @@ pub fn zoneinfo_path() -> Option<String> {
     // root at all; everything lives under the configured prefix. We check
     // <prefix>/etc/zoneinfo first (alongside .../etc/localtime) and
     // <prefix>/lib/zoneinfo as a fallback.
-    elevate_paths::get().zoneinfo_dirs().into_iter().find(|p| {
+    crate::paths::get().zoneinfo_dirs().into_iter().find(|p| {
         let path = Path::new(p);
         path.metadata().and_then(|meta| checks(path, meta)).is_ok()
     })

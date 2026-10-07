@@ -22,10 +22,10 @@ use std::path::Path;
 
 /// These paths are Zainium OS's immutable core layers. Neither these paths
 /// themselves nor anything underneath them may be modified/deleted by a
-/// destructive command. Derived from `elevate_privilege.toml`'s configured
+/// destructive command. Derived from the configured `[paths]`
 /// `prefix` (defaults to `/overlayer`, `/overlayer/syshub`, `/overlayer/zaisys`).
 fn protected_prefixes() -> Vec<String> {
-    elevate_paths::get().protected_layers()
+    crate::paths::get().protected_layers()
 }
 
 /// These commands are considered dangerous to the core OS layers -- they

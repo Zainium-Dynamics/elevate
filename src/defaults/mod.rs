@@ -46,7 +46,7 @@ use settings_dsl::{
 // won't exist on this system.
 pub fn system_editor() -> String {
     if cfg!(target_os = "linux") {
-        let bindir = &elevate_paths::get().bindir;
+        let bindir = &crate::paths::get().bindir;
         format!("{bindir}/nano:{bindir}/vi")
     } else {
         "/bin/vi".into()

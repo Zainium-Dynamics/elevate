@@ -124,7 +124,7 @@ pub(super) fn attempt_authenticate(
                 } else if non_interactive {
                     return Err(Error::InteractionRequired);
                 } else {
-                    user_warn!("Authentication failed, try again.");
+                    user_warn!("Sorry, incorrect password, try again.");
                 }
             }
 

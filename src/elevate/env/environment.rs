@@ -15,7 +15,7 @@ use super::wildcard_match::wildcard_match;
 // are NOT symlinks into /usr) -- so we intentionally omit /usr/bin and
 // /usr/sbin here.
 pub(crate) fn path_default() -> String {
-    let paths = elevate_paths::get();
+    let paths = crate::paths::get();
     format!("{}:/bin:{}:/sbin", paths.bindir, paths.sbindir)
 }
 

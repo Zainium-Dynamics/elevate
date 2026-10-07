@@ -17,20 +17,20 @@ type Environment = HashMap<OsString, OsString>;
 use super::cli::SuRunOptions;
 
 fn valid_login_shells_list() -> String {
-    elevate_paths::get().shells_file()
+    crate::paths::get().shells_file()
 }
 fn fallback_login_shell() -> String {
-    format!("{}/bin/sh", elevate_paths::get().prefix)
+    format!("{}/bin/sh", crate::paths::get().prefix)
 }
 
 // TODO: use _PATH_STDPATH and _PATH_DEFPATH_ROOT from paths.h
 // NOTE: this build targets ZainiumOS — no /bin, /sbin, /usr at root at all;
 // everything lives under the configured prefix.
 fn path_default() -> String {
-    elevate_paths::get().bindir.clone()
+    crate::paths::get().bindir.clone()
 }
 fn path_default_root() -> String {
-    let paths = elevate_paths::get();
+    let paths = crate::paths::get();
     format!("{}:{}", paths.sbindir, paths.bindir)
 }
 

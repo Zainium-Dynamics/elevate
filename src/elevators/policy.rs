@@ -156,7 +156,7 @@ impl Judgement {
         // note that it is also likely to have been tried as part of
         // the "editor" setting, so this is a last-resort
         super::select_editor(&self.settings, true).unwrap_or_else(|| {
-            let vi = format!("{}/vi", elevate_paths::get().bindir);
+            let vi = format!("{}/vi", crate::paths::get().bindir);
             (std::path::PathBuf::from(vi), vec![])
         })
     }

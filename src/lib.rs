@@ -1,5 +1,6 @@
 #[macro_use]
 mod macros;
+mod paths;
 #[macro_use]
 pub(crate) mod gettext;
 

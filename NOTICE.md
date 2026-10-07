@@ -2,11 +2,11 @@
 
 ## License
 
-**This package is licensed under MIT OR Apache-2.0** (same as the elevate monorepo).
+**This package is licensed under MIT OR Apache-2.0**.
 
 See:
-- monorepo [`../LICENSE-MIT`](../LICENSE-MIT)
-- monorepo [`../LICENSE-APACHE`](../LICENSE-APACHE)
+- [`LICENSE-MIT`](LICENSE-MIT)
+- [`LICENSE-APACHE`](LICENSE-APACHE)
 - package [`COPYRIGHT`](COPYRIGHT)
 
 ## Upstream heritage
@@ -41,7 +41,7 @@ Website: https://zainiumdynamics.tech
 - Policy file: `/etc/elevators/elevate.toml`
 - PAM: runtime `dlopen(libelevate_pam.so)` (elevate-pam)
 - Zero-Trust Core Protector for `/overlayer` paths
-- License: **MIT OR Apache-2.0** (monorepo unified)
+- License: **MIT OR Apache-2.0** 
 
 Details: [`elevate_linux_dev_guide.md`](elevate_linux_dev_guide.md)
 

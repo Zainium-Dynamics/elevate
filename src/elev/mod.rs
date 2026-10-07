@@ -69,7 +69,7 @@ fn authenticate(requesting_user: &str, user: &str, login: bool) -> Result<PamCon
                 if max_tries == 0 {
                     return Err(Error::MaxAuthAttempts(current_try));
                 } else {
-                    user_warn!("Authentication failed, try again.");
+                    user_warn!("Sorry, incorrect password, try again.");
                 }
             }
 

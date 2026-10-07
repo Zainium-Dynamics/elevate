@@ -49,7 +49,7 @@ const VERSION: &str = if let Some(version_override) = std::option_env!("ELEVATE_
 };
 
 pub(crate) fn candidate_elevators_file() -> PathBuf {
-    let mut path = PathBuf::from(&elevate_paths::get().elevators_file);
+    let mut path = PathBuf::from(&crate::paths::get().elevators_file);
     if !path.exists() {
         let sys_path = PathBuf::from("/etc/elevators/elevate.toml");
         let legacy_rs = PathBuf::from("/etc/elevators-rs");
@@ -95,7 +95,7 @@ fn elevate_process() -> Result<(), Error> {
                 std::process::exit(0);
             }
             ElevateAction::Version(_) => {
-                println_ignore_io_error!("elevate-privilege {VERSION}");
+                println_ignore_io_error!("elevate {VERSION}");
                 std::process::exit(0);
             }
             ElevateAction::RemoveTimestamp(_) => {

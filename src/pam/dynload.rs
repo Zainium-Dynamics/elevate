@@ -17,7 +17,7 @@ use super::sys::{pam_conv, pam_handle_t};
 ///
 /// Prefer the elevate product name; never require `/usr`.
 fn elevate_pam_sonames() -> Vec<String> {
-    let libdir = &elevate_paths::get().libdir;
+    let libdir = &crate::paths::get().libdir;
     vec![
         // Primary: elevate-pam (this project's cdylib)
         "libelevate_pam.so.0".into(),
@@ -32,7 +32,7 @@ fn elevate_pam_sonames() -> Vec<String> {
 
 /// Classic Linux-PAM sonames — only if ELEVATE_ALLOW_LIBPAM=1.
 fn legacy_libpam_sonames() -> Vec<String> {
-    let libdir = &elevate_paths::get().libdir;
+    let libdir = &crate::paths::get().libdir;
     vec![
         "libpam.so.0".into(),
         "libpam.so".into(),

@@ -200,6 +200,16 @@ mod tests {
     }
 
     #[test]
+    fn blocks_staged_syshub_upgrades() {
+        for p in ["/overlayer/.syshub-pending", "/overlayer/.syshub-pending/root/bin/zex"] {
+            for cmd in ["rm", "mv", "cp"] {
+                let verdict = check_command(OsStr::new(cmd), &args(&["-rf", p, "/tmp/x"]));
+                assert!(matches!(verdict, CoreProtectorVerdict::Blocked { .. }), "{cmd} {p}");
+            }
+        }
+    }
+
+    #[test]
     fn blocks_nested_path() {
         let verdict = check_command(
             OsStr::new("/bin/rm"),

@@ -57,6 +57,11 @@ pub(crate) fn exit_with_signal(signal: i32) -> Result<Infallible, crate::common:
     // rather than run a signal handler.
     let _ = (|| SignalAction::new(SignalHandlerBehavior::Default)?.register(signal))();
 
+    // The command already dumped core if it was going to; elevate itself must not.
+    let no_core = libc::rlimit { rlim_cur: 0, rlim_max: 0 };
+    // SAFETY: setrlimit only reads the rlimit struct passed to it.
+    unsafe { libc::setrlimit(libc::RLIMIT_CORE, &no_core) };
+
     crate::system::kill(crate::system::Process::process_id(), signal)?;
     unreachable!();
 }

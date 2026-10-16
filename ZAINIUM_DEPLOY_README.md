@@ -14,9 +14,11 @@ includes the following changes:
 5. musl static build with PAM loaded via `dlopen()` at runtime (zero
    link-time PAM dependency, works on glibc AND musl systems)
 6. Zainium Zero-Trust Core Protector: blocks `rm`/`rmdir`/`mv`/`shred`/
-   `unlink` from targeting `/overlayer`, `/overlayer/syshub`,
-   `/overlayer/zaisys` (or anything underneath them), even for root,
-   with a single exact-match exception for `zex syshub -u`
+   `unlink` from targeting `/overlayer/syshub`, `/overlayer/zaisys`,
+   `/overlayer/.syshub-pending` (or anything underneath them) and
+   `/overlayer` itself, even for root, with a single exact-match
+   exception for `zex syshub -u`. Userland (`/overlayer/zexlib`) and
+   `/overlayer/agents` stay root's to manage.
 
 ## 1. Build
 
@@ -121,7 +123,10 @@ actually exec'd).
 
 - Triggers on: `rm`, `rmdir`, `mv`, `shred`, `unlink`
 - Blocks any argument that is exactly, or starts with (path-prefix),
-  any of: `/overlayer`, `/overlayer/syshub`, `/overlayer/zaisys`
+  any of: `/overlayer/syshub`, `/overlayer/zaisys`, `/overlayer/.syshub-pending`
+- Blocks `/overlayer` itself, but not what else is under it: userland
+  (`/overlayer/zexlib`, where flatpak's system installation also lives)
+  and `/overlayer/agents`
 - Blocks even when the invoking user is root
 - The ONLY exception: an exact-match command line `zex syshub -u`
   (no extra/different flags) is allowed through, for legitimate

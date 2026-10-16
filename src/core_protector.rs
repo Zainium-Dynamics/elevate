@@ -23,7 +23,8 @@ use std::path::Path;
 /// These paths are Zainium OS's immutable core layers. Neither these paths
 /// themselves nor anything underneath them may be modified/deleted by a
 /// destructive command. Derived from the configured `[paths]`
-/// `prefix` (defaults to `/overlayer`, `/overlayer/syshub`, `/overlayer/zaisys`).
+/// `prefix` (defaults to `/overlayer/syshub`, `/overlayer/zaisys`,
+/// `/overlayer/.syshub-pending`); `/overlayer` itself is protected on its own.
 fn protected_prefixes() -> Vec<String> {
     crate::paths::get().protected_layers()
 }
@@ -103,6 +104,11 @@ fn path_is_protected(raw_arg: &OsStr) -> Option<String> {
     // Lexical normalization: strip trailing slashes so that
     // "/overlayer/" also matches "/overlayer".
     let normalized = arg_str.trim_end_matches('/');
+
+    // the overlay root itself, but not userland (zexlib) or agents under it
+    if normalized == crate::paths::get().overlay_root() {
+        return Some(arg_str.into_owned());
+    }
 
     for prefix in &protected_prefixes() {
         if normalized == prefix {
@@ -216,6 +222,21 @@ mod tests {
             &args(&["-rf", "/overlayer/syshub/bin/ls"]),
         );
         assert!(matches!(verdict, CoreProtectorVerdict::Blocked { .. }));
+    }
+
+    #[test]
+    fn allows_userland_and_agents() {
+        for p in [
+            "/overlayer/zexlib/var/lib/flatpak/appstream",
+            "/overlayer/zexlib/union/bin/foo",
+            "/overlayer/zexlib",
+            "/overlayer/agents/state/state.json",
+        ] {
+            for cmd in ["rm", "mv", "cp"] {
+                let verdict = check_command(OsStr::new(cmd), &args(&["-rf", p]));
+                assert!(matches!(verdict, CoreProtectorVerdict::Allowed), "{cmd} {p}");
+            }
+        }
     }
 
     #[test]

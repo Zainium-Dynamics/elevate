@@ -186,19 +186,25 @@ impl PathsConfig {
             String::from("/usr/share/zoneinfo"),
         ]
     }
-    /// Immutable core layers that destructive commands must not touch: the
-    /// directory holding `prefix`, `prefix` itself, and the sibling `zaisys`
-    /// layer next to it.
-    pub fn protected_layers(&self) -> Vec<String> {
+    /// The directory holding `prefix` (`/overlayer`). Protected only as itself: userland
+    /// (`zexlib`) and `agents` live under it and stay root's to manage.
+    pub fn overlay_root(&self) -> String {
         let prefix = self.prefix.trim_end_matches('/');
-        let overlay_root = match prefix.rfind('/') {
+        match prefix.rfind('/') {
             Some(0) | None => prefix.to_string(),
             Some(pos) => prefix[..pos].to_string(),
-        };
+        }
+    }
+
+    /// Immutable core layers that destructive commands must not touch, with
+    /// everything under them: `prefix` itself, the sibling `zaisys` layer, and
+    /// the staged base upgrade waiting for the next boot.
+    pub fn protected_layers(&self) -> Vec<String> {
+        let overlay_root = self.overlay_root();
         vec![
-            overlay_root.clone(),
-            prefix.to_string(),
+            self.prefix.trim_end_matches('/').to_string(),
             format!("{overlay_root}/zaisys"),
+            format!("{overlay_root}/.syshub-pending"),
         ]
     }
 }
@@ -250,9 +256,10 @@ mod tests {
     #[test]
     fn protected_layers_follow_prefix() {
         let c: PathsConfig = parse("[paths]\nprefix = \"/overlayer/syshub\"\n").into();
+        assert_eq!(c.overlay_root(), "/overlayer");
         assert_eq!(
             c.protected_layers(),
-            vec!["/overlayer", "/overlayer/syshub", "/overlayer/zaisys"]
+            vec!["/overlayer/syshub", "/overlayer/zaisys", "/overlayer/.syshub-pending"]
         );
     }
 }

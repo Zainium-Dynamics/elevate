@@ -227,7 +227,7 @@ mod tests {
     #[test]
     fn allows_userland_and_agents() {
         for p in [
-            "/overlayer/zexlib/var/lib/flatpak/appstream",
+            "/overlayer/zexlib/union/var/lib/flatpak/appstream",
             "/overlayer/zexlib/union/bin/foo",
             "/overlayer/zexlib",
             "/overlayer/agents/state/state.json",

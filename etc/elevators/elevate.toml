@@ -20,6 +20,9 @@ Defaults secure_path="/overlayer/syshub/sbin:/overlayer/syshub/bin:/overlayer/ze
 ## Password feedback (asterisks) while typing.
 Defaults pwfeedback
 
+## Ask for the password again after 5 minutes, like sudo (elevate's own default is 15).
+Defaults timestamp_timeout=5
+
 ## Always use a pty for elevated commands (safer against TTY injection).
 Defaults use_pty
 
